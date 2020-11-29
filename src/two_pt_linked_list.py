@@ -4,7 +4,7 @@ class ListNode:
         self.next = next
 
 
-def detectCycle(head: ListNode) -> ListNode:
+def detect_cycle(head: ListNode) -> ListNode:
     slow = fast = entry = head
     while fast and fast.next:
         slow = slow.next
@@ -18,7 +18,7 @@ def detectCycle(head: ListNode) -> ListNode:
     return None
 
 
-def hasCycle(head: ListNode) -> bool:
+def has_cycle(head: ListNode) -> bool:
     slow = fast = head
     while fast and fast.next:
         slow = slow.next
@@ -28,7 +28,7 @@ def hasCycle(head: ListNode) -> bool:
     return False
 
 
-def getIntersectionNode(headA: ListNode, headB: ListNode) -> ListNode:
+def get_intersection_node(headA: ListNode, headB: ListNode) -> ListNode:
     ptA = headA
     ptB = headB
 
@@ -39,7 +39,7 @@ def getIntersectionNode(headA: ListNode, headB: ListNode) -> ListNode:
     return ptA
 
 
-def removeNthFromEnd(head: ListNode, n: int) -> ListNode:
+def remove_nth_from_end(head: ListNode, n: int) -> ListNode:
     ptDelayed = ptCur = head
     i = 0
     while ptCur:
@@ -53,3 +53,30 @@ def removeNthFromEnd(head: ListNode, n: int) -> ListNode:
     else:
         ptDelayed.next = ptDelayed.next.next
     return head
+
+
+def rotate_right(head: ListNode, k: int) -> ListNode:
+    # empty list case
+    if not head:
+        return head
+    # one element case
+    if not head.next:
+        return head
+
+    prev_tail = head
+    n = 1
+    while prev_tail.next:
+        prev_tail = prev_tail.next
+        n += 1
+
+    prev_tail.next = head
+    new_tail = head
+
+    tail_idx = (n - k % n - 1)
+    for i in range(0, tail_idx):
+        new_tail = new_tail.next
+
+    new_head = new_tail.next
+    new_tail.next = None
+
+    return new_head
