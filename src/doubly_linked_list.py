@@ -1,4 +1,4 @@
-class DoublyNode:
+class Node:
     def __init__(self, val):
         self.next = None
         self.prev = None
@@ -37,7 +37,7 @@ class DoublyLinkedList:
         """
         Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list.
         """
-        new_node = DoublyNode(val=val)
+        new_node = Node(val=val)
         if self.head:
             new_node.next = self.head
             self.head.prev = new_node
@@ -51,7 +51,7 @@ class DoublyLinkedList:
         """
         Append a node of value val to the last element of the linked list.
         """
-        new_node = DoublyNode(val=val)
+        new_node = Node(val=val)
         if self.tail:
             self.tail.next = new_node
             new_node.prev = self.tail
@@ -79,7 +79,7 @@ class DoublyLinkedList:
         if prev_node is None:
             return
         next_node = prev_node.next
-        cur_node = DoublyNode(val=val)
+        cur_node = Node(val=val)
         prev_node.next = cur_node
         cur_node.prev = prev_node
         cur_node.next = next_node

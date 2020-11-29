@@ -1,4 +1,4 @@
-class SinglyNode:
+class Node:
     def __init__(self, val):
         self.val = val
         self.next = None
@@ -43,7 +43,7 @@ class SinglyLinkedList:
         """
         Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list.
         """
-        new_node = SinglyNode(val=val)
+        new_node = Node(val=val)
         if not self.head:
             self.head = new_node
         else:
@@ -61,7 +61,7 @@ class SinglyLinkedList:
         """
         Append a node of value val to the last element of the linked list.
         """
-        new_node = SinglyNode(val)
+        new_node = Node(val)
         tail = self.get_tail()
         if not tail:
             self.head = new_node
@@ -76,7 +76,7 @@ class SinglyLinkedList:
         if index == 0:
             self.addAtHead(val)
         else:
-            new_node = SinglyNode(val=val)
+            new_node = Node(val=val)
             prev_node = self.get_node(index - 1)
             if prev_node:
                 new_node.next = prev_node.next
