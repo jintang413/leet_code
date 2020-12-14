@@ -34,3 +34,23 @@ def max_depth_topdown(self, root: TreeNode) -> int:
     answer = self.helper(root, 1)
 
     return answer
+
+
+def is_tree_symmetric(root: TreeNode) -> bool:
+    # empty tree
+    if not root:
+        return True
+    # tree only contains one node
+    if not root.left and not root.right:
+        return True
+
+    return helper(root.left, root.right)
+
+
+def helper(left: TreeNode, right: TreeNode) -> bool:
+    if left and right and left.val == right.val:
+        return helper(left.left, right.right) and helper(left.right, right.left)
+    if not left and not right:
+        return True
+    else:
+        return False
