@@ -54,3 +54,47 @@ def helper(left: TreeNode, right: TreeNode) -> bool:
         return True
     else:
         return False
+
+def has_path_sum(root: TreeNode, sum: int) -> bool:
+    # empty tree
+    if not root:
+        return False
+    # leaf node
+    if not root.left and not root.right:
+        return sum == root.val
+
+    return has_path_sum(root.left, sum - root.val) or has_path_sum(root.right, sum - root.val)
+
+def is_univalue(root: TreeNode) -> int:
+    # leaf node are all uni_value
+    if not root.left and not root.right:
+        return True, 1
+
+    count = 0
+
+    left_is_uni = True
+    if root.left:
+        left_is_uni, left_count = is_univalue(root.left)
+        left_is_uni = left_is_uni and root.val == root.left.val
+        count += left_count
+
+    right_is_uni = True
+    if root.right:
+        right_is_uni, right_count = is_univalue(root.right)
+        right_is_uni = right_is_uni and root.val == root.right.val
+        count += right_count
+
+    # check if current node is univalue
+    if left_is_uni and right_is_uni:
+        return True, count + 1
+
+    return False, count
+
+
+def count_unival_subtrees(root: TreeNode) -> int:
+    if not root:
+        return 0
+
+    _, count = is_univalue(root)
+
+    return count
