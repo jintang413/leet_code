@@ -47,6 +47,7 @@ def preorder_traversal_iterative(root: TreeNode) -> List[int]:
             stack_nodes.append(cur_node.left)
     return res
 
+
 def inorder_traversal_recursive(root: TreeNode) -> List[int]:
     res = []
     if not root:
@@ -57,6 +58,7 @@ def inorder_traversal_recursive(root: TreeNode) -> List[int]:
     res.extend(inorder_traversal_recursive(root=root.right))
 
     return res
+
 
 def inorder_traversal_iterative(root: TreeNode) -> List[int]:
     """ left -> root -> right
@@ -87,6 +89,7 @@ def inorder_traversal_iterative(root: TreeNode) -> List[int]:
 
     return res
 
+
 def postorder_traversal_recursive(root: TreeNode) -> List[int]:
     """left -> right -> root"""
     res = []
@@ -98,6 +101,7 @@ def postorder_traversal_recursive(root: TreeNode) -> List[int]:
     res.append(root.val)
 
     return res
+
 
 def postorder_traversal_one_stack(root: TreeNode) -> List[int]:
     """left -> right -> root
@@ -156,6 +160,7 @@ def postorder_traversal_two_stack(root: TreeNode) -> List[int]:
 
     return res
 
+
 def postorder_traversal_one_stack(root: TreeNode) -> List[int]:
     """left -> right -> root
         1.1 Create an empty stack
@@ -194,7 +199,29 @@ def postorder_traversal_one_stack(root: TreeNode) -> List[int]:
 
     return res
 
+
 def peek(stack):
     if len(stack) > 0:
         return stack[-1]
     return None
+
+
+def build_tree_inorder_postorder(inorder: List[int], postorder: List[int]) -> TreeNode:
+
+    # create value to index map to provide O(1) access for index, O(n)
+    idx_map = {val: idx for idx, val in enumerate(inorder)}
+
+    def helper(left_idx, right_idx):
+        if left_idx > right_idx:
+            return None
+
+        root = TreeNode(postorder.pop())
+
+        mid_idx = idx_map[root.val]
+
+        root.right = helper(mid_idx + 1, right_idx)
+        root.left = helper(left_idx, mid_idx - 1)
+
+        return root
+
+    return helper(0, len(inorder) - 1)
