@@ -55,6 +55,7 @@ def helper(left: TreeNode, right: TreeNode) -> bool:
     else:
         return False
 
+
 def has_path_sum(root: TreeNode, sum: int) -> bool:
     # empty tree
     if not root:
@@ -64,6 +65,7 @@ def has_path_sum(root: TreeNode, sum: int) -> bool:
         return sum == root.val
 
     return has_path_sum(root.left, sum - root.val) or has_path_sum(root.right, sum - root.val)
+
 
 def is_univalue(root: TreeNode) -> int:
     # leaf node are all uni_value

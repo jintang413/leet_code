@@ -1,4 +1,5 @@
 from typing import List
+from collections import deque
 
 
 class TreeNode:
@@ -189,7 +190,7 @@ def postorder_traversal_one_stack(root: TreeNode) -> List[int]:
 
         cur = stack_nodes.pop()
 
-        if cur.right and self.peek(stack_nodes) == cur.right:
+        if cur.right and peek(stack_nodes) == cur.right:
             stack_nodes.pop()
             stack_nodes.append(cur)
             cur = cur.right
@@ -206,8 +207,30 @@ def peek(stack):
     return None
 
 
-def build_tree_inorder_postorder(inorder: List[int], postorder: List[int]) -> TreeNode:
+def levelOrder(root: TreeNode) -> List[List[int]]:
+    res = []
+    if not root:
+        return res
 
+    q = deque()
+    q.append(root)
+    while q:
+        level_res = []
+        count = len(q)
+        while count > 0:
+            cur = q.popleft()
+            level_res.append(cur.val)
+            count -= 1
+            if cur.left:
+                q.append(cur.left)
+            if cur.right:
+                q.append(cur.right)
+        res.append(level_res)
+
+    return res
+
+
+def build_tree_inorder_postorder(inorder: List[int], postorder: List[int]) -> TreeNode:
     # create value to index map to provide O(1) access for index, O(n)
     idx_map = {val: idx for idx, val in enumerate(inorder)}
 
@@ -225,3 +248,94 @@ def build_tree_inorder_postorder(inorder: List[int], postorder: List[int]) -> Tr
         return root
 
     return helper(0, len(inorder) - 1)
+
+
+class Node:
+    def __init__(self, data, left=None, right=None, next=None):
+        self.val = data
+        self.left = left
+        self.right = right
+        self.next = next
+
+
+def connect_right(self, root: Node) -> Node:
+    if not root:
+        return root
+
+    q = deque()
+    q.append(root)
+    while q:
+        count = len(q)
+        while count > 0:
+            cur = q.popleft()
+            count -= 1
+            if count > 0:
+                n_node = q[0]
+                cur.next = n_node
+                cur.next
+            if cur.left:
+                q.append(cur.left)
+            if cur.right:
+                q.append(cur.right)
+
+    return root
+
+
+def lowest_common_ancestor(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+    if root is None:
+        return None
+
+    if root == p or root == q:
+        return root
+
+    left = lowest_common_ancestor(root.left, p, q)
+    right = lowest_common_ancestor(root.right, p, q)
+
+    if left and right:
+        return root
+    else:
+        return left or right
+
+
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+
+        :type root: TreeNode
+        :rtype: str
+        """
+
+        def helper(root):
+            res = []
+            # base case
+            if not root:
+                return ['None']
+            else:
+                res.append(str(root.val))
+                res.extend(helper(root.left))
+                res.extend(helper(root.right))
+            return res
+
+        return ",".join(helper(root))
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+
+        :type data: str
+        :rtype: TreeNode
+        """
+
+        def helper(nodes):
+            if nodes[0] == "None":
+                nodes.pop(0)
+                return None
+
+            root = TreeNode(nodes.pop(0))
+            root.left = helper(nodes)
+            root.right = helper(nodes)
+            return root
+
+        nodes = data.split(",")
+        root = helper(nodes)
+        return root
