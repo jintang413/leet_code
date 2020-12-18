@@ -1,3 +1,6 @@
+from typing import Dict
+
+
 class TreeNode:
     def __init__(self, data, left=None, right=None):
         self.val = data
@@ -100,3 +103,87 @@ def count_unival_subtrees(root: TreeNode) -> int:
     _, count = is_univalue(root)
 
     return count
+
+
+class ListNode:
+    def __init__(self, data, next):
+        self.val = data
+        self.next = next
+
+
+def swapPairs(head: ListNode) -> ListNode:
+    # empty list
+    if not head:
+        return head
+
+    # one node
+    if head and not head.next:
+        return head
+
+    first_node = head
+    second_node = head.next
+    first_node.next = swapPairs(second_node.next)
+    second_node.next = first_node
+
+    return second_node
+
+
+def search_binary_search_tree(root: TreeNode, val: int) -> TreeNode:
+    if not root:
+        return None
+
+    if root.val == val:
+        return root
+
+    left = search_binary_search_tree(root.left, val)
+    right = search_binary_search_tree(root.right, val)
+
+    return left or right
+
+
+def climb_stairs(n: int) -> int:
+    cache = {}
+
+    def helper(i, n, cache) -> int:
+        if i > n:
+            return 0
+
+        if i == n:
+            return 1
+
+        if i in cache:
+            return cache[i]
+        cache[i] = helper(i + 1, n, cache) + helper(i + 2, n, cache)
+        return cache[i]
+
+    return helper(0, n, cache)
+
+# Uplift
+def collapose_nested_keys(input: Dict) -> Dict:
+    def helper(input, flatten_input, parent_key):
+        if not isinstance(input, dict):
+            flatten_input[parent_key] = input
+        else:
+            for k in input:
+                nested_key = f"{parent_key}.{k}" if parent_key else f"{k}"
+                helper(input[k], flatten_input, nested_key)
+
+    if not input:
+        return input
+
+    flatten_input = {}
+    helper(input, flatten_input, None)
+    return flatten_input
+
+
+if __name__ == "__main__":
+
+    input = dict(
+        key1=dict(
+            key2=dict(
+                key3=1
+            )
+        ),
+        key4=5
+    )
+    print(collapose_nested_keys(input))
