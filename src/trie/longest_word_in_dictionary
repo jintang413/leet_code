@@ -1,0 +1,77 @@
+from typing import List
+from collections import defaultdict
+from functools import reduce
+
+
+class TrieNode(object):
+    def __init__(self):
+        self.children = {}
+        self.is_word = False
+        self.index = -1
+
+
+class Trie(object):
+    def __init__(self):
+        self.root = TrieNode()
+        self.words = None
+
+    def insert(self, word: str, index) -> None:
+        """
+        Inserts a word into the trie.
+        """
+        cur = self.root
+        for c in word:
+            if c not in cur.children:
+                cur.children[c] = TrieNode()
+
+            cur = cur.children[c]
+        cur.is_word = True
+        cur.index = index
+
+    def dfs(self):
+        ans = ""
+        stack = []
+        stack.append(self.root)
+        while stack:
+            node = stack.pop()
+            if node.index >= 0 or node == self.root:
+                if node != self.root:
+                    word = self.words[node.index]
+                    if len(word) > len(ans) or (len(word) == len(ans) and word < ans):
+                        ans = word
+                for child in node.children.values():
+                    stack.append(child)
+        return ans
+
+
+def longest_word_oo_trie(words: List[str]) -> str:
+    trie = Trie()
+
+    for i, word in enumerate(words):
+        trie.insert(word, i)
+    trie.words = words
+
+    ans = trie.dfs()
+
+    return ans
+
+
+def longestWord_default_dict(words):
+    Trie = lambda: defaultdict(Trie)
+    trie = Trie()
+    END = True
+
+    for i, word in enumerate(words):
+        reduce(dict.__getitem__, word, trie)[END] = i
+
+    stack = list(trie.values())
+    ans = ""
+    while stack:
+        cur = stack.pop()
+        if END in cur:
+            word = words[cur[END]]
+            if len(word) > len(ans) or len(word) == len(ans) and word < ans:
+                ans = word
+            stack.extend([cur[letter] for letter in cur if letter != END])
+
+    return ans
