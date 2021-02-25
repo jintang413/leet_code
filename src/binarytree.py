@@ -104,35 +104,6 @@ def postorder_traversal_recursive(root: TreeNode) -> List[int]:
     return res
 
 
-def postorder_traversal_one_stack(root: TreeNode) -> List[int]:
-    """left -> right -> root
-        1. Push root to first stack.
-        2. Loop while first stack is not empty
-           2.1 Pop a node from first stack and push it to second stack
-           2.2 Push left and right children of the popped node to first stack
-        3. Print contents of second stack
-    """
-    res = []
-    if not root:
-        return res
-
-    stack_nodes = []
-    stack_final = []
-    stack_nodes.append(root)
-    while stack_nodes:
-        cur = stack_nodes.pop()
-        stack_final.append(cur.val)
-        if cur.left:
-            stack_nodes.append(cur.left)
-        if cur.right:
-            stack_nodes.append(cur.right)
-
-    while stack_final:
-        res.append(stack_final.pop())
-
-    return res
-
-
 def postorder_traversal_two_stack(root: TreeNode) -> List[int]:
     """left -> right -> root
         1. Push root to first stack.
